@@ -6,7 +6,8 @@
 
 void TypedValuePool::addTypeValue(const TypeValue &typedValue, std::string op,
                                   PoolType ty) {
-  assert(typedValue.val) switch (ty) {
+  assert(typedValue.val);
+  switch (ty) {
   case PoolType::Index: {
     assert(typedValue.type.isa<IndexType>());
   }
