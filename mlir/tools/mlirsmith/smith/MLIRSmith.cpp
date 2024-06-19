@@ -109,7 +109,6 @@ int mlir::toy::printConfig() {
 
 void init(){
   initType();
-  registerSPIRVGenerators();
 }
 
 class MLIRSmithImpl {

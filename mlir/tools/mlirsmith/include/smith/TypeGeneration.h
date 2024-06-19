@@ -207,17 +207,19 @@ inline Type randomFloatType(MLIRContext *ctx) {
 inline Type randomType(MLIRContext *ctx) {
   std::vector<Type> candidates = {IndexType::get(ctx),
                                   randomIntOrFloatType(ctx),
-                                  randomStaticShapedMemrefType(ctx),
-                                  randomStaticShapedTensorType(ctx),
-                                  randomDynamicShapedTensorType(ctx),
-                                  randomDynamicShapedMemrefType(ctx),
-                                  randomVectorType(ctx)};
+                                  // randomStaticShapedMemrefType(ctx),
+                                  // randomStaticShapedTensorType(ctx),
+                                  // randomDynamicShapedTensorType(ctx),
+                                  // randomDynamicShapedMemrefType(ctx),
+                                  // randomVectorType(ctx)
+                                  };
   return candidates[random(candidates.size())];
 }
 
 inline Type randomNonTensorType(MLIRContext *ctx) {
   std::vector<Type> candidates = {randomIntOrFloatType(ctx),
-                                  randomStaticShapedMemrefType(ctx)};
+                                  // randomStaticShapedMemrefType(ctx)
+                                 };
   return candidates[random(candidates.size())];
 }
 

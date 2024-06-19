@@ -181,22 +181,22 @@ inline Conf getConfigTemplate() {
 
   std::vector<OpConf> arithOpConfs;
 
-  arithOpConfs.push_back(
-      OpConf("arith", "addf", rand(priority_base), {"func.func"}));
+  // arithOpConfs.push_back(
+  //     OpConf("arith", "addf", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "addi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "andi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "ceildivsi", rand(priority_base), {"func.func"}));
-  arithOpConfs.push_back(
-      OpConf("arith", "cmpf", rand(priority_base), {"func.func"}));
+  // arithOpConfs.push_back(
+  //     OpConf("arith", "cmpf", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "cmpi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "constant", rand(priority_base), {"func.func"}));
-  arithOpConfs.push_back(
-      OpConf("arith", "divf", rand(priority_base), {"func.func"}));
+  // arithOpConfs.push_back(
+  //     OpConf("arith", "divf", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "divsi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
@@ -207,16 +207,16 @@ inline Conf getConfigTemplate() {
       OpConf("arith", "minsi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "minui", rand(priority_base), {"func.func"}));
-  arithOpConfs.push_back(
-      OpConf("arith", "mulf", rand(priority_base), {"func.func"}));
+  // arithOpConfs.push_back(
+  //     OpConf("arith", "mulf", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "muli", rand(priority_base), {"func.func"}));
-  arithOpConfs.push_back(
-      OpConf("arith", "negf", rand(priority_base), {"func.func"}));
+  // arithOpConfs.push_back(
+  //     OpConf("arith", "negf", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "ori", rand(priority_base), {"func.func"}));
-  arithOpConfs.push_back(
-      OpConf("arith", "remf", rand(priority_base), {"func.func"}));
+  // arithOpConfs.push_back(
+  //     OpConf("arith", "remf", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "remsi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
@@ -227,8 +227,8 @@ inline Conf getConfigTemplate() {
       OpConf("arith", "shrsi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "shrui", rand(priority_base), {"func.func"}));
-  arithOpConfs.push_back(
-      OpConf("arith", "subf", rand(priority_base), {"func.func"}));
+  // arithOpConfs.push_back(
+  //     OpConf("arith", "subf", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
       OpConf("arith", "subi", rand(priority_base), {"func.func"}));
   arithOpConfs.push_back(
@@ -297,11 +297,11 @@ inline Conf getConfigTemplate() {
 
   std::vector<OpConf> scfOpConfs;
   scfOpConfs.push_back(OpConf("scf", "if", rand(priority_base), {"func.func"}));
-  scfOpConfs.push_back(
-      OpConf("scf", "execute_region", rand(priority_base), {}));
-  scfOpConfs.push_back(OpConf("scf", "index_switch", rand(priority_base), {}));
-  scfOpConfs.push_back(OpConf("scf", "while", rand(priority_base), {}));
-  scfOpConfs.push_back(OpConf("scf", "parallel", rand(priority_base), {}));
+  // scfOpConfs.push_back(
+  //     OpConf("scf", "execute_region", rand(priority_base), {}));
+  // scfOpConfs.push_back(OpConf("scf", "index_switch", rand(priority_base), {}));
+  // scfOpConfs.push_back(OpConf("scf", "while", rand(priority_base), {}));
+  // scfOpConfs.push_back(OpConf("scf", "parallel", rand(priority_base), {}));
 
   std::vector<OpConf> affineOpConfs;
   affineOpConfs.push_back(OpConf("affine", "apply", rand(priority_base), {}));
@@ -426,24 +426,24 @@ inline Conf getConfigTemplate() {
 
   c.supported_ops.insert(c.supported_ops.end(), funcOpConfs.begin(),
                          funcOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), linalgOpConfs.begin(),
-                         linalgOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), memrefOpConfs.begin(),
-                         memrefOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), linalgOpConfs.begin(),
+  //                        linalgOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), memrefOpConfs.begin(),
+  //                        memrefOpConfs.end());
   c.supported_ops.insert(c.supported_ops.end(), arithOpConfs.begin(),
                          arithOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), mathOpConfs.begin(),
-                         mathOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), mathOpConfs.begin(),
+  //                        mathOpConfs.end());
   c.supported_ops.insert(c.supported_ops.end(), scfOpConfs.begin(),
                          scfOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), affineOpConfs.begin(),
-                         affineOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), vectorOpConfs.begin(),
-                         vectorOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), tensorOpConfs.begin(),
-                         tensorOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), indexOpConfs.begin(),
-                         indexOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), affineOpConfs.begin(),
+  //                        affineOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), vectorOpConfs.begin(),
+  //                        vectorOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), tensorOpConfs.begin(),
+  //                        tensorOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), indexOpConfs.begin(),
+  //                        indexOpConfs.end());
 
   return c;
 }

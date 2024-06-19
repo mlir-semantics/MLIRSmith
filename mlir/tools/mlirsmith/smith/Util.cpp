@@ -235,11 +235,11 @@ std::vector<mlir::Type> getSupportedIntOrFloatTypes(MLIRContext *ctx) {
 //  auto ctx = builder.getContext();
   std::vector<mlir::Type> supportedElementaryTypes;
   auto intTys = getSupportedIntTypes(ctx);
-  auto floatTys = getSupportedFloatTypes(ctx);
+  // auto floatTys = getSupportedFloatTypes(ctx);
   supportedElementaryTypes.insert(supportedElementaryTypes.end(),
                                   intTys.begin(), intTys.end());
-  supportedElementaryTypes.insert(supportedElementaryTypes.end(),
-                                  floatTys.begin(), floatTys.end());
+  // supportedElementaryTypes.insert(supportedElementaryTypes.end(),
+  //                                 floatTys.begin(), floatTys.end());
   return supportedElementaryTypes;
 }
 
