@@ -430,18 +430,18 @@ inline Conf getConfigTemplate() {
   //                        linalgOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), memrefOpConfs.begin(),
   //                        memrefOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), arithOpConfs.begin(),
-                         arithOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), arithOpConfs.begin(),
+  //                        arithOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), mathOpConfs.begin(),
   //                        mathOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), scfOpConfs.begin(),
-                         scfOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), scfOpConfs.begin(),
+  //                        scfOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), affineOpConfs.begin(),
   //                        affineOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), vectorOpConfs.begin(),
   //                        vectorOpConfs.end());
-  // c.supported_ops.insert(c.supported_ops.end(), tensorOpConfs.begin(),
-  //                        tensorOpConfs.end());
+  c.supported_ops.insert(c.supported_ops.end(), tensorOpConfs.begin(),
+                         tensorOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), indexOpConfs.begin(),
   //                        indexOpConfs.end());
 

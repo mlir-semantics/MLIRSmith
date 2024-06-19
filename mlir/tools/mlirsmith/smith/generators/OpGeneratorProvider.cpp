@@ -52,7 +52,7 @@ OpGenerator initGenerator() {
       region.pool.constantIndices.insert(std::make_pair(i, idx));
     }
 
-    /*
+    
     // init tensor constants
     for (int i = 0; i < tenConsSize; i++) {
       if (UR(2)) {
@@ -68,6 +68,7 @@ OpGenerator initGenerator() {
       }
     }
 
+    /*
     for (int i = 0; i < memAllocsSize; i++) {
       region.pool.generateRankedMemref(builder, loc,
                                  randomRankedMemrefType(builder.getContext()));

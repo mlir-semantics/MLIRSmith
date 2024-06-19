@@ -208,8 +208,8 @@ inline Type randomType(MLIRContext *ctx) {
   std::vector<Type> candidates = {IndexType::get(ctx),
                                   randomIntOrFloatType(ctx),
                                   // randomStaticShapedMemrefType(ctx),
-                                  // randomStaticShapedTensorType(ctx),
-                                  // randomDynamicShapedTensorType(ctx),
+                                  randomStaticShapedTensorType(ctx),
+                                  randomDynamicShapedTensorType(ctx),
                                   // randomDynamicShapedMemrefType(ctx),
                                   // randomVectorType(ctx)
                                   };
@@ -224,8 +224,8 @@ inline Type randomNonTensorType(MLIRContext *ctx) {
 }
 
 inline FunctionType randomFunctionType(MLIRContext *ctx) {
-  int func_arg_num = random(func_arg_ub);
-  int func_ret_num = random(func_ret_ub);
+  int func_arg_num = 0; // random(func_arg_ub);
+  int func_ret_num = 0; // random(func_ret_ub);
   SmallVector<Type> argTypes;
   SmallVector<Type> retTypes;
   for (int i = 0; i < func_arg_num; ++i) {
