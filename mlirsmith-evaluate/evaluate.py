@@ -27,26 +27,15 @@ MLIR_OPT = Path("../build/bin/mlir-opt")
 COMPILE_MLIRSMITH_ARGS = ["--canonicalize"]
 
 # from mlir/test/Integration/Dialect/Arith/CPU/test-wide-int-emulation-addi-i16.mlir
-COMPILE_ARITH_ARGS = ["--arith-expand", "--convert-scf-to-cf", "--convert-cf-to-llvm"
-                    , "--convert-vector-to-llvm", "--convert-func-to-llvm"
-                    , "--convert-arith-to-llvm"]
+COMPILE_ARITH_ARGS = ["--arith-expand", "--test-lower-to-llvm"]
 
-# from mlir/test/Integration/Dialect/Linalg/CPU/test-tensor-matmul.mlir
-COMPILE_LINALG_ARGS = ["-linalg-bufferize", "-arith-bufferize"
-                     , "-tensor-bufferize", "-func-bufferize", "-finalizing-bufferize"
-                     , "-buffer-deallocation-pipeline", "-convert-bufferization-to-memref"
-                     , "-convert-linalg-to-loops", "-convert-scf-to-cf"
-                     , "-expand-strided-metadata", "-lower-affine", "-convert-arith-to-llvm"
-                     , "-convert-scf-to-cf", "-finalize-memref-to-llvm", "-convert-func-to-llvm"
-                     , "-reconcile-unrealized-casts"]
+# from mlir/test/Integration/Dialect/Linalg/CPU/mmt4d.mlir
+COMPILE_LINALG_ARGS = ["-one-shot-bufferize", "-func-bufferize", "-buffer-deallocation-pipeline"
+                     , "-cse", "-canonicalize", "-test-lower-to-llvm"]
 
-# from mlir/test/Integration/Dialect/Linalg/CPU/test-tensor-e2e.mlir
-COMPILE_TENSOR_ARGS = ["-arith-bufferize", "-linalg-bufferize"
-                     , "-tensor-bufferize", "-func-bufferize", "-finalizing-bufferize"
-                     , "-buffer-deallocation-pipeline", "-convert-bufferization-to-memref"
-                     , "-convert-linalg-to-loops", "-convert-arith-to-llvm", "-convert-scf-to-cf"
-                     , "-convert-cf-to-llvm", "-finalize-memref-to-llvm", "-convert-func-to-llvm"
-                     , "-reconcile-unrealized-casts"]
+# from mlir/test/Integration/Dialect/Linalg/CPU/mmt4d.mlir
+COMPILE_TENSOR_ARGS = ["-one-shot-bufferize", "-func-bufferize", "-buffer-deallocation-pipeline"
+                     , "-cse", "-canonicalize", "-test-lower-to-llvm"]
 
 def get_folder(experiment : Experiment) -> Path:
     if experiment == Experiment.MlirSmith:
