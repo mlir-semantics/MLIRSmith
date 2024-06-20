@@ -18,35 +18,35 @@ class Experiment(Enum):
 # REMEMBER: first -
 # cmake --build ../build --target mlirsmith
 EXPERIMENT = Experiment.MlirSmith
-N_TO_GENERATE = 100
+N_TO_GENERATE = 10
 
 GENERATION = Path("./generated")
 MLIRSMITH = Path("../build/bin/mlirsmith")
 MLIR_OPT = Path("../build/bin/mlir-opt")
 
-COMPILE_MLIRSMITH_ARGS = "--canonicalize"
+COMPILE_MLIRSMITH_ARGS = ["--canonicalize"]
 
 # from mlir/test/Integration/Dialect/Arith/CPU/test-wide-int-emulation-addi-i16.mlir
-COMPILE_ARITH_ARGS = ("--convert-scf-to-cf --convert-cf-to-llvm "
-                     "--convert-vector-to-llvm --convert-func-to-llvm "
-                     "--convert-arith-to-llvm")
+COMPILE_ARITH_ARGS = ["--arith-expand", "--convert-scf-to-cf", "--convert-cf-to-llvm"
+                    , "--convert-vector-to-llvm", "--convert-func-to-llvm"
+                    , "--convert-arith-to-llvm"]
 
 # from mlir/test/Integration/Dialect/Linalg/CPU/test-tensor-matmul.mlir
-COMPILE_LINALG_ARGS = ("-linalg-bufferize -arith-bufferize"
-                      "-tensor-bufferize -func-bufferize -finalizing-bufferize"
-                      "-buffer-deallocation-pipeline -convert-bufferization-to-memref"
-                      "-convert-linalg-to-loops -convert-scf-to-cf"
-                      "-expand-strided-metadata -lower-affine -convert-arith-to-llvm "
-                      "-convert-scf-to-cf --finalize-memref-to-llvm -convert-func-to-llvm "
-                      "-reconcile-unrealized-casts")
+COMPILE_LINALG_ARGS = ["-linalg-bufferize", "-arith-bufferize"
+                     , "-tensor-bufferize", "-func-bufferize", "-finalizing-bufferize"
+                     , "-buffer-deallocation-pipeline", "-convert-bufferization-to-memref"
+                     , "-convert-linalg-to-loops", "-convert-scf-to-cf"
+                     , "-expand-strided-metadata", "-lower-affine", "-convert-arith-to-llvm"
+                     , "-convert-scf-to-cf", "-finalize-memref-to-llvm", "-convert-func-to-llvm"
+                     , "-reconcile-unrealized-casts"]
 
 # from mlir/test/Integration/Dialect/Linalg/CPU/test-tensor-e2e.mlir
-COMPILE_TENSOR_ARGS = ("-arith-bufferize -linalg-bufferize"
-                      "-tensor-bufferize -func-bufferize -finalizing-bufferize"
-                      "-buffer-deallocation-pipeline -convert-bufferization-to-memref"
-                      "-convert-linalg-to-loops -convert-arith-to-llvm -convert-scf-to-cf"
-                      "-convert-cf-to-llvm --finalize-memref-to-llvm -convert-func-to-llvm "
-                      "-reconcile-unrealized-casts")
+COMPILE_TENSOR_ARGS = ["-arith-bufferize", "-linalg-bufferize"
+                     , "-tensor-bufferize", "-func-bufferize", "-finalizing-bufferize"
+                     , "-buffer-deallocation-pipeline", "-convert-bufferization-to-memref"
+                     , "-convert-linalg-to-loops", "-convert-arith-to-llvm", "-convert-scf-to-cf"
+                     , "-convert-cf-to-llvm", "-finalize-memref-to-llvm", "-convert-func-to-llvm"
+                     , "-reconcile-unrealized-casts"]
 
 def get_folder(experiment : Experiment) -> Path:
     if experiment == Experiment.MlirSmith:
@@ -125,7 +125,7 @@ def evaluate_generated_files(e : Experiment) -> dict[int, ExperimentResult]:
 
         # file does exist. now try to compile it
         file_lines = count_file_lines(file)
-        outs = subprocess.run([MLIR_OPT.absolute(), compile_args, file.absolute()], capture_output=True)
+        outs = subprocess.run([MLIR_OPT.absolute(), *compile_args, file.absolute()], capture_output=True)
         out_errors = outs.stderr.decode("utf-8")
         results.append(ExperimentResult(
             successfully_generated = True,
