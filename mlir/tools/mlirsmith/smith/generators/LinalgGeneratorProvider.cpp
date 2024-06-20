@@ -84,7 +84,7 @@ OpGenerator linalgGenericGenerator() {
     if (UR(2)) {
       operandTys.push_back(RankedTensorType::get(shape0, elemTy));
     } else {
-      operandTys.push_back(MemRefType::get(shape0, elemTy));
+      operandTys.push_back(RankedTensorType::get(shape0, elemTy));
     }
 
     for (int i = 1; i < input_num; i++) {
@@ -102,7 +102,7 @@ OpGenerator linalgGenericGenerator() {
       if (UR(2)) {
         operandTys.push_back(RankedTensorType::get(shape, elemTy));
       } else {
-        operandTys.push_back(MemRefType::get(shape, elemTy));
+        operandTys.push_back(RankedTensorType::get(shape, elemTy));
       }
     }
     SmallVector<AffineExpr> fullRankExprs;
@@ -120,8 +120,8 @@ OpGenerator linalgGenericGenerator() {
     SmallVector<Value> operands;
     for (auto operandTy : operandTys) {
       auto candidates = parent.pool.searchCandidatesFrom(
-          {PoolType::DynamicShapedTensor, PoolType::StaticShapedMemref,
-           PoolType::StaticShapedTensor, PoolType::DynamicShapedMemref},
+          {PoolType::DynamicShapedTensor,
+           PoolType::StaticShapedTensor},
           typeEquivalentFilter(operandTy));
       if (candidates.empty()) {
         candidates.push_back(
@@ -131,8 +131,8 @@ OpGenerator linalgGenericGenerator() {
           sampleTypedValueFrom(candidates, "linalg.generic").val);
     }
     auto initCandidates = parent.pool.searchCandidatesFrom(
-        {PoolType::DynamicShapedTensor, PoolType::StaticShapedMemref,
-         PoolType::StaticShapedTensor, PoolType::DynamicShapedMemref},
+        {PoolType::DynamicShapedTensor,
+         PoolType::StaticShapedTensor},
         typeEquivalentFilter(initTy));
     if (initCandidates.empty()) {
       initCandidates.push_back(
@@ -179,15 +179,14 @@ OpGenerator linalgGenericGenerator() {
 OpGenerator linalgBroadCastGenerator() {
   return [](OpBuilder &builder, Location loc, OpRegion &region) {
     auto inputCandidates = region.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedTensor, PoolType::DynamicShapedTensor,
-         PoolType::StaticShapedMemref, PoolType::DynamicShapedMemref},
+        {PoolType::StaticShapedTensor, PoolType::DynamicShapedTensor},
         emptyFilter());
     if (inputCandidates.empty()) {
       Type t;
       if (UR(2)) {
         t = randomRankedTensorType(builder.getContext());
       } else {
-        t = randomRankedMemrefType(builder.getContext());
+        t = randomRankedTensorType(builder.getContext());
       }
       inputCandidates.push_back(
           region.pool.generateTypedValue(builder, loc, t));
@@ -201,15 +200,14 @@ OpGenerator linalgBroadCastGenerator() {
         operand.type.dyn_cast<ShapedType>().getRank()};
     Type initTy;
     if (UR(2)) {
-      initTy = MemRefType::get(
+      initTy = RankedTensorType::get(
           initShape, operand.type.dyn_cast<ShapedType>().getElementType());
     } else {
       initTy = RankedTensorType::get(
           initShape, operand.type.dyn_cast<ShapedType>().getElementType());
     }
     auto initCandidates = region.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedTensor, PoolType::DynamicShapedTensor,
-         PoolType::StaticShapedMemref, PoolType::DynamicShapedMemref},
+        {PoolType::StaticShapedTensor, PoolType::DynamicShapedTensor},
         typeEquivalentFilter(initTy));
     if (initCandidates.empty()) {
       if (initTy.isa<MemRefType>() &&
@@ -239,8 +237,7 @@ OpGenerator linalgTransposeGenerator() {
   return [](OpBuilder &builder, Location loc, OpRegion &parent) {
     // For this operation, permutation is not allowed to be empty, therefore,
     auto fromCandidates = parent.pool.searchCandidatesFrom(
-        {PoolType::DynamicShapedTensor, PoolType::StaticShapedTensor,
-         PoolType::StaticShapedMemref, PoolType::DynamicShapedMemref},
+        {PoolType::DynamicShapedTensor, PoolType::StaticShapedTensor},
         [](TypeValue tval) {
           return tval.type.dyn_cast<ShapedType>().getRank() > 0;
         });
@@ -249,7 +246,7 @@ OpGenerator linalgTransposeGenerator() {
       if (UR(2)) {
         t = randomRankedTensorType(builder.getContext());
       } else {
-        t = randomRankedMemrefType(builder.getContext());
+        t = randomRankedTensorType(builder.getContext());
       }
       fromCandidates.push_back(parent.pool.generateTypedValue(builder, loc, t));
     }
@@ -273,11 +270,10 @@ OpGenerator linalgTransposeGenerator() {
     if (UR(2)) {
       initTy = RankedTensorType::get(initShape, shapeTy.getElementType());
     } else {
-      initTy = MemRefType::get(initShape, shapeTy.getElementType());
+      initTy = RankedTensorType::get(initShape, shapeTy.getElementType());
     }
     auto initCandidates = parent.pool.searchCandidatesFrom(
-        {PoolType::DynamicShapedTensor, PoolType::StaticShapedTensor,
-         PoolType::StaticShapedMemref, PoolType::DynamicShapedMemref},
+        {PoolType::DynamicShapedTensor, PoolType::StaticShapedTensor},
         typeEquivalentFilter(initTy));
     if (initCandidates.empty()) {
       if (initTy.isa<MemRefType>() &&
@@ -345,15 +341,15 @@ OpGenerator linalgMapGenerator() {
     int input_num = UR(linalg_operands_num_ub - 1) + 1;
     std::vector<Value> ins;
     auto candidates = parent.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedTensor, PoolType::StaticShapedMemref,
-         PoolType::DynamicShapedTensor, PoolType::DynamicShapedMemref},
+        {PoolType::StaticShapedTensor,
+         PoolType::DynamicShapedTensor},
         emptyFilter());
     if (candidates.empty()) {
       Type t;
       if (UR(2)) {
         t = randomRankedTensorType(builder.getContext());
       } else {
-        t = randomRankedMemrefType(builder.getContext());
+        t = randomRankedTensorType(builder.getContext());
       }
       candidates.push_back(parent.pool.generateTypedValue(builder, loc, t));
     }
@@ -413,8 +409,8 @@ OpGenerator linalgReduceGenerator() {
     auto typedValuePool = parent.pool;
     // reduce shapedType that dimension > 2.
     auto inputCandidates = typedValuePool.searchCandidatesFrom(
-        {PoolType::StaticShapedTensor, PoolType::StaticShapedMemref,
-         PoolType::DynamicShapedTensor, PoolType::DynamicShapedMemref},
+        {PoolType::StaticShapedTensor,
+         PoolType::DynamicShapedTensor},
         [&](TypeValue typeValue) {
           return typeValue.type.dyn_cast<ShapedType>().getRank() > 0;
         });
@@ -463,11 +459,11 @@ OpGenerator linalgReduceGenerator() {
     if (UR(2)) {
       initTy = RankedTensorType::get(reducedShape, shapedType.getElementType());
     } else {
-      initTy = MemRefType::get(reducedShape, shapedType.getElementType());
+      initTy = RankedTensorType::get(reducedShape, shapedType.getElementType());
     }
     auto initCandidates = parent.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedMemref, PoolType::StaticShapedTensor,
-         PoolType::DynamicShapedMemref, PoolType::DynamicShapedTensor},
+        {PoolType::StaticShapedTensor,
+         PoolType::DynamicShapedTensor},
         typeEquivalentFilter(initTy));
     if (initCandidates.empty()) {
       initCandidates.push_back(
@@ -514,7 +510,7 @@ OpGenerator linalgReduceGenerator() {
 OpGenerator linalgDotGenerator() {
   return [](OpBuilder &builder, Location loc, OpRegion &region) {
     auto operand0Candidates = region.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedTensor, PoolType::StaticShapedMemref},
+        {PoolType::StaticShapedTensor},
         [&](TypeValue tval) {
           return tval.type.dyn_cast<ShapedType>().getRank() == 1;
         });
@@ -532,7 +528,7 @@ OpGenerator linalgDotGenerator() {
     auto operand1Ty =
         randomMemrefOrRankedTensorType(operand0.type.dyn_cast<ShapedType>());
     auto operand1Candidates = region.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedTensor, PoolType::StaticShapedMemref},
+        {PoolType::StaticShapedTensor},
         typeEquivalentFilter(operand1Ty));
     if (operand1Candidates.empty()) {
       operand1Candidates.push_back(
@@ -567,8 +563,8 @@ OpGenerator linalgMatMulGenerator() {
     auto typedValuePool = region.pool;
 
     auto operand1Candidate = region.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedMemref, PoolType::StaticShapedTensor,
-         PoolType::DynamicShapedTensor, PoolType::DynamicShapedMemref},
+        {PoolType::StaticShapedTensor,
+         PoolType::DynamicShapedTensor},
         [&](TypeValue tval) {
           auto shapeTy = tval.type.dyn_cast<ShapedType>();
           return shapeTy.getRank() == 2 && !shapeTy.isDynamicDim(1);
@@ -582,7 +578,7 @@ OpGenerator linalgMatMulGenerator() {
       if (UR(2)) {
         type = RankedTensorType::get(shape, elemTy);
       } else {
-        type = MemRefType::get(shape, elemTy);
+        type = RankedTensorType::get(shape, elemTy);
       }
       auto tVal = typedValuePool.generateTypedValue(builder, loc, type);
       operand1Candidate.push_back(tVal);
@@ -592,8 +588,8 @@ OpGenerator linalgMatMulGenerator() {
     auto elemTy = shapedType1.getElementType();
     auto x = shapedType1.getDimSize(0);
     auto operand2Candidates = region.pool.searchCandidatesFrom(
-        {PoolType::StaticShapedTensor, PoolType::StaticShapedMemref,
-         PoolType::DynamicShapedTensor, PoolType::DynamicShapedMemref},
+        {PoolType::StaticShapedTensor,
+         PoolType::DynamicShapedTensor},
         [&](TypeValue tval) {
           auto ty = tval.type.dyn_cast<ShapedType>();
           return ty.getElementType() == elemTy && ty.getRank() == 2 &&

@@ -224,8 +224,8 @@ inline Type randomNonTensorType(MLIRContext *ctx) {
 }
 
 inline FunctionType randomFunctionType(MLIRContext *ctx) {
-  int func_arg_num = 0; // random(func_arg_ub);
-  int func_ret_num = 0; // random(func_ret_ub);
+  int func_arg_num = random(func_arg_ub);
+  int func_ret_num = random(func_ret_ub);
   SmallVector<Type> argTypes;
   SmallVector<Type> retTypes;
   for (int i = 0; i < func_arg_num; ++i) {
@@ -247,7 +247,7 @@ inline Type randomMemrefOrRankedTensorType(MLIRContext *ctx) {
   if (random(2)) {
     return RankedTensorType::get(shape, elemTy);
   } else {
-    return MemRefType::get(shape, elemTy);
+    return RankedTensorType::get(shape, elemTy);
   }
 }
 
@@ -257,7 +257,7 @@ inline Type randomMemrefOrRankedTensorType(ShapedType t) {
   if (random(2)) {
     return RankedTensorType::get(shape, elemTy);
   } else {
-    return MemRefType::get(shape, elemTy);
+    return RankedTensorType::get(shape, elemTy);
   }
 }
 

@@ -142,18 +142,18 @@ inline Conf getConfigTemplate() {
 //      OpConf("func", "call", rand(priority_base), {"func.func"}));
 
   std::vector<OpConf> linalgOpConfs;
-  linalgOpConfs.push_back(
-      OpConf("linalg", "matmul", rand(priority_base), {"func.func"}));
+  // linalgOpConfs.push_back(
+  //     OpConf("linalg", "matmul", rand(priority_base), {"func.func"}));
   linalgOpConfs.push_back(
       OpConf("linalg", "generic", rand(priority_base), {"func.func"}));
-  linalgOpConfs.push_back(
-      OpConf("linalg", "map", rand(priority_base), {"func.func"}));
-  linalgOpConfs.push_back(OpConf("linalg", "copy", rand(priority_base), {}));
-  linalgOpConfs.push_back(
-      OpConf("linalg", "transpose", rand(priority_base), {}));
-  linalgOpConfs.push_back(
-      OpConf("linalg", "broadcast", rand(priority_base), {}));
-  linalgOpConfs.push_back(OpConf("linalg", "dot", rand(priority_base), {}));
+  // linalgOpConfs.push_back(
+  //     OpConf("linalg", "map", rand(priority_base), {"func.func"}));
+  // linalgOpConfs.push_back(OpConf("linalg", "copy", rand(priority_base), {}));
+  // linalgOpConfs.push_back(
+  //     OpConf("linalg", "transpose", rand(priority_base), {}));
+  // linalgOpConfs.push_back(
+  //     OpConf("linalg", "broadcast", rand(priority_base), {}));
+  // linalgOpConfs.push_back(OpConf("linalg", "dot", rand(priority_base), {}));
 
   std::vector<OpConf> memrefOpConfs;
 
@@ -297,8 +297,8 @@ inline Conf getConfigTemplate() {
 
   std::vector<OpConf> scfOpConfs;
   scfOpConfs.push_back(OpConf("scf", "if", rand(priority_base), {"func.func"}));
-  // scfOpConfs.push_back(
-  //     OpConf("scf", "execute_region", rand(priority_base), {}));
+  scfOpConfs.push_back(
+      OpConf("scf", "execute_region", rand(priority_base), {}));
   // scfOpConfs.push_back(OpConf("scf", "index_switch", rand(priority_base), {}));
   // scfOpConfs.push_back(OpConf("scf", "while", rand(priority_base), {}));
   // scfOpConfs.push_back(OpConf("scf", "parallel", rand(priority_base), {}));
@@ -369,22 +369,22 @@ inline Conf getConfigTemplate() {
   std::vector<OpConf> tensorOpConfs;
 
   tensorOpConfs.push_back(OpConf("tensor", "cast", rand(priority_base), {}));
-  tensorOpConfs.push_back(
-      OpConf("tensor", "collapse_shape", rand(priority_base), {}));
+  // tensorOpConfs.push_back(
+  //     OpConf("tensor", "collapse_shape", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "dim", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "empty", rand(priority_base), {}));
   tensorOpConfs.push_back(
       OpConf("tensor", "expand_shape", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "extract", rand(priority_base), {}));
-  tensorOpConfs.push_back(
-      OpConf("tensor", "from_elements", rand(priority_base), {}));
+  // tensorOpConfs.push_back(
+  //     OpConf("tensor", "from_elements", rand(priority_base), {}));
   tensorOpConfs.push_back(
       OpConf("tensor", "generate", rand(priority_base), {}));
-  tensorOpConfs.push_back(OpConf("tensor", "insert", rand(priority_base), {}));
+  // tensorOpConfs.push_back(OpConf("tensor", "insert", rand(priority_base), {}));
 //  tensorOpConfs.push_back(OpConf("tensor", "pack", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "rank", rand(priority_base), {}));
-  tensorOpConfs.push_back(OpConf("tensor", "splat", rand(priority_base), {}));
-  tensorOpConfs.push_back(OpConf("tensor", "unpack", rand(priority_base), {}));
+  // tensorOpConfs.push_back(OpConf("tensor", "splat", rand(priority_base), {}));
+  // tensorOpConfs.push_back(OpConf("tensor", "unpack", rand(priority_base), {}));
 
   std::vector<OpConf> indexOpConfs;
   indexOpConfs.push_back(OpConf("index", "add", rand(priority_base), {}));
@@ -426,12 +426,12 @@ inline Conf getConfigTemplate() {
 
   c.supported_ops.insert(c.supported_ops.end(), funcOpConfs.begin(),
                          funcOpConfs.end());
-  // c.supported_ops.insert(c.supported_ops.end(), linalgOpConfs.begin(),
-  //                        linalgOpConfs.end());
+  c.supported_ops.insert(c.supported_ops.end(), linalgOpConfs.begin(),
+                         linalgOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), memrefOpConfs.begin(),
   //                        memrefOpConfs.end());
-  // c.supported_ops.insert(c.supported_ops.end(), arithOpConfs.begin(),
-  //                        arithOpConfs.end());
+  c.supported_ops.insert(c.supported_ops.end(), arithOpConfs.begin(),
+                         arithOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), mathOpConfs.begin(),
   //                        mathOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), scfOpConfs.begin(),
@@ -440,8 +440,8 @@ inline Conf getConfigTemplate() {
   //                        affineOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), vectorOpConfs.begin(),
   //                        vectorOpConfs.end());
-  c.supported_ops.insert(c.supported_ops.end(), tensorOpConfs.begin(),
-                         tensorOpConfs.end());
+  // c.supported_ops.insert(c.supported_ops.end(), tensorOpConfs.begin(),
+  //                        tensorOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), indexOpConfs.begin(),
   //                        indexOpConfs.end());
 
