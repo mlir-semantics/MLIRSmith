@@ -369,22 +369,22 @@ inline Conf getConfigTemplate() {
   std::vector<OpConf> tensorOpConfs;
 
   tensorOpConfs.push_back(OpConf("tensor", "cast", rand(priority_base), {}));
-  tensorOpConfs.push_back(
-      OpConf("tensor", "collapse_shape", rand(priority_base), {}));
+  // tensorOpConfs.push_back(
+  //     OpConf("tensor", "collapse_shape", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "dim", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "empty", rand(priority_base), {}));
-  tensorOpConfs.push_back(
-      OpConf("tensor", "expand_shape", rand(priority_base), {}));
+  // tensorOpConfs.push_back(
+  //     OpConf("tensor", "expand_shape", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "extract", rand(priority_base), {}));
-  tensorOpConfs.push_back(
-      OpConf("tensor", "from_elements", rand(priority_base), {}));
+  // tensorOpConfs.push_back(
+  //     OpConf("tensor", "from_elements", rand(priority_base), {}));
   tensorOpConfs.push_back(
       OpConf("tensor", "generate", rand(priority_base), {}));
   tensorOpConfs.push_back(OpConf("tensor", "insert", rand(priority_base), {}));
 //  tensorOpConfs.push_back(OpConf("tensor", "pack", rand(priority_base), {}));
-  tensorOpConfs.push_back(OpConf("tensor", "rank", rand(priority_base), {}));
-  tensorOpConfs.push_back(OpConf("tensor", "splat", rand(priority_base), {}));
-  tensorOpConfs.push_back(OpConf("tensor", "unpack", rand(priority_base), {}));
+  // tensorOpConfs.push_back(OpConf("tensor", "rank", rand(priority_base), {}));
+  // tensorOpConfs.push_back(OpConf("tensor", "splat", rand(priority_base), {}));
+  // tensorOpConfs.push_back(OpConf("tensor", "unpack", rand(priority_base), {}));
 
   std::vector<OpConf> indexOpConfs;
   indexOpConfs.push_back(OpConf("index", "add", rand(priority_base), {}));
@@ -430,8 +430,8 @@ inline Conf getConfigTemplate() {
   //                        linalgOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), memrefOpConfs.begin(),
   //                        memrefOpConfs.end());
-  // c.supported_ops.insert(c.supported_ops.end(), arithOpConfs.begin(),
-  //                        arithOpConfs.end());
+  c.supported_ops.insert(c.supported_ops.end(), arithOpConfs.begin(),
+                         arithOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), mathOpConfs.begin(),
   //                        mathOpConfs.end());
   // c.supported_ops.insert(c.supported_ops.end(), scfOpConfs.begin(),
